@@ -1,0 +1,81 @@
+.indexes-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(18rem, 0.7fr);
+  gap: 1rem;
+}
+
+.index-group {
+  display: grid;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.index-group-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0;
+  color: var(--text);
+  font-size: 0.98rem;
+  font-weight: 800;
+}
+
+.index-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  background: color-mix(in srgb, var(--card), var(--bg) 10%);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 0.7);
+}
+
+.index-name {
+  margin: 0;
+  color: var(--text);
+  font-weight: 750;
+}
+
+.lookup-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.timing-card {
+  padding: 0.9rem;
+  background: color-mix(in srgb, var(--card), var(--bg) 10%);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 0.7);
+}
+
+.timing-value {
+  margin: 0.2rem 0;
+  color: var(--primary);
+  font-size: 1.6rem;
+  font-weight: 850;
+}
+
+.violation-list {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.violation-item {
+  padding: 0.7rem;
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger), transparent 91%);
+  border: 1px solid color-mix(in srgb, var(--danger), transparent 68%);
+  border-radius: calc(var(--radius) * 0.6);
+}
+
+@media (max-width: 980px) {
+  .indexes-layout,
+  .lookup-grid {
+    grid-template-columns: 1fr;
+  }
+}

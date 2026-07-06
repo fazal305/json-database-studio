@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JSON Database Studio | Import Export</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/import-export.css">
+  </head>
+  <body data-page="import-export">
+    <div class="mobile-topbar">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">JD</span>
+        <span class="brand-text"><span class="brand-title">JSON Database Studio</span><span class="brand-subtitle">Import/Export</span></span>
+      </a>
+      <button class="btn btn-ghost btn-sm" type="button" data-sidebar-toggle>Menu</button>
+    </div>
+    <div class="app-shell">
+      <aside class="app-sidebar" id="appSidebar"></aside>
+      <main class="app-main">
+        <section class="page">
+          <header class="page-header">
+            <div>
+              <p class="page-kicker">Data Portability</p>
+              <h1 class="page-title">Import/Export</h1>
+              <p class="page-description">Parse real JSON or CSV, infer schema types, preview rows, then commit to a new or existing table. Export tables or the full workspace.</p>
+            </div>
+          </header>
+          <div class="import-export-layout">
+            <section class="stack">
+              <div class="panel">
+                <div class="panel-header">
+                  <div>
+                    <h2 class="panel-title">Import Data</h2>
+                    <p class="panel-subtitle">Paste content or upload a file.</p>
+                  </div>
+                </div>
+                <div class="import-tabs">
+                  <button class="import-tab active" type="button" data-import-mode="json">JSON</button>
+                  <button class="import-tab" type="button" data-import-mode="csv">CSV</button>
+                  <button class="import-tab" type="button" data-import-mode="workspace">Workspace JSON</button>
+                </div>
+                <div class="stack">
+                  <label>
+                    <span class="form-label">Target table</span>
+                    <select class="form-select" id="targetTableSelect"></select>
+                  </label>
+                  <label>
+                    <span class="form-label">New table name</span>
+                    <input class="form-control" id="newTableName" placeholder="Required when creating a new table">
+                  </label>
+                  <textarea class="form-control code-surface" id="importText" rows="10" placeholder="Paste JSON, CSV, or workspace JSON here"></textarea>
+                  <label class="drop-zone">
+                    <span>Choose a file to import</span>
+                    <input class="visually-hidden" type="file" id="importFileInput" accept=".json,.csv,text/csv,application/json">
+                  </label>
+                  <div class="toolbar">
+                    <button class="btn btn-outline-primary" type="button" id="previewImportBtn">Preview Import</button>
+                    <button class="btn btn-primary" type="button" id="commitImportBtn">Commit Import</button>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-header">
+                  <div>
+                    <h2 class="panel-title">Import Preview</h2>
+                    <p class="panel-subtitle">First rows parsed from your input.</p>
+                  </div>
+                </div>
+                <div id="importPreview"></div>
+              </div>
+            </section>
+            <aside class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Export Data</h2>
+                  <p class="panel-subtitle">Downloads are generated with the Blob API.</p>
+                </div>
+              </div>
+              <div class="export-option">
+                <label><span class="form-label">Table</span><select class="form-select" id="exportTableSelect"></select></label>
+                <div class="toolbar">
+                  <button class="btn btn-outline-primary" type="button" id="exportJsonBtn">Export JSON</button>
+                  <button class="btn btn-outline-primary" type="button" id="exportCsvBtn">Export CSV</button>
+                </div>
+              </div>
+              <div class="export-option">
+                <strong>Full workspace</strong>
+                <p class="muted mb-0">Includes settings, theme, tables, indexes, relationships, history, and activity.</p>
+                <button class="btn btn-primary" type="button" id="exportWorkspaceBtn">Export Workspace JSON</button>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/import-export.js"></script>
+  </body>
+</html>

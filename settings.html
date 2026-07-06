@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JSON Database Studio | Settings</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/settings.css" />
+  </head>
+  <body data-page="settings">
+    <div class="mobile-topbar">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">JD</span>
+        <span class="brand-text">
+          <span class="brand-title">JSON Database Studio</span>
+          <span class="brand-subtitle">Settings</span>
+        </span>
+      </a>
+      <button class="btn btn-ghost btn-sm" type="button" data-sidebar-toggle>
+        Menu
+      </button>
+    </div>
+
+    <div class="app-shell">
+      <aside class="app-sidebar" id="appSidebar"></aside>
+
+      <main class="app-main">
+        <section class="page">
+          <header class="page-header">
+            <div>
+              <p class="page-kicker">Workspace Control</p>
+              <h1 class="page-title">Settings</h1>
+              <p class="page-description">
+                Customize the live theme, transition behavior, query defaults,
+                sidebar mode, and full localStorage workspace.
+              </p>
+            </div>
+            <div class="toolbar">
+              <button
+                class="btn btn-outline-primary"
+                type="button"
+                id="exportWorkspaceBtn"
+              >
+                Export Workspace
+              </button>
+              <label class="btn btn-primary mb-0" for="workspaceImportInput"
+                >Import Workspace</label
+              >
+              <input
+                class="visually-hidden"
+                type="file"
+                id="workspaceImportInput"
+                accept="application/json,.json"
+              />
+            </div>
+          </header>
+
+          <div class="settings-layout">
+            <section class="stack">
+              <section class="panel">
+                <div class="panel-header">
+                  <div>
+                    <h2 class="panel-title">Theme Customizer</h2>
+                    <p class="panel-subtitle">
+                      Every color is applied live through CSS custom properties.
+                    </p>
+                  </div>
+                </div>
+                <div id="themeCustomizer" class="theme-token-grid"></div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-header">
+                  <div>
+                    <h2 class="panel-title">Theme Presets</h2>
+                    <p class="panel-subtitle">
+                      Presets are editable starting points, not locked themes.
+                    </p>
+                  </div>
+                </div>
+                <div id="themePresets" class="preset-grid"></div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-header">
+                  <div>
+                    <h2 class="panel-title">Application Preferences</h2>
+                    <p class="panel-subtitle">
+                      These settings are persisted in localStorage.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="settings-action-list">
+                  <div class="settings-action">
+                    <div>
+                      <h3 class="panel-title">Page transition speed</h3>
+                      <p class="panel-subtitle">
+                        Minimum overlay duration:
+                        <span id="transitionSpeedValue"></span> ms
+                      </p>
+                    </div>
+                    <input
+                      class="form-range"
+                      type="range"
+                      id="transitionSpeedInput"
+                      min="120"
+                      max="900"
+                      step="20"
+                    />
+                  </div>
+
+                  <div class="settings-action">
+                    <div>
+                      <h3 class="panel-title">Default query page size</h3>
+                      <p class="panel-subtitle">
+                        Used by Query Console result limits.
+                      </p>
+                    </div>
+                    <input
+                      class="form-control"
+                      type="number"
+                      id="queryPageSizeInput"
+                      min="5"
+                      max="500"
+                      step="5"
+                    />
+                  </div>
+
+                  <div class="settings-action">
+                    <div>
+                      <h3 class="panel-title">Compact sidebar</h3>
+                      <p class="panel-subtitle">
+                        Reduce navigation width on desktop.
+                      </p>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        role="switch"
+                        id="compactSidebarInput"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </section>
+
+            <aside class="stack">
+              <section class="panel">
+                <div class="panel-header">
+                  <div>
+                    <h2 class="panel-title">Live Preview</h2>
+                    <p class="panel-subtitle">
+                      Updates immediately as you change tokens.
+                    </p>
+                  </div>
+                </div>
+                <div id="themePreview" class="theme-preview"></div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-header">
+                  <div>
+                    <h2 class="panel-title">Workspace Summary</h2>
+                    <p class="panel-subtitle">
+                      Current saved browser database.
+                    </p>
+                  </div>
+                </div>
+                <div id="workspaceSummary" class="stack"></div>
+              </section>
+
+              <section class="panel settings-danger-zone">
+                <div class="panel-header">
+                  <div>
+                    <h2 class="panel-title">Danger Zone</h2>
+                    <p class="panel-subtitle">
+                      Use carefully. These actions change saved localStorage
+                      data.
+                    </p>
+                  </div>
+                </div>
+                <div class="settings-action-list">
+                  <button
+                    class="btn btn-outline-primary w-100"
+                    type="button"
+                    id="resetThemeBtn"
+                  >
+                    Reset to Default Theme
+                  </button>
+                  <button
+                    class="btn btn-outline-primary w-100"
+                    type="button"
+                    id="resetDemoBtn"
+                  >
+                    Reset Demo Data
+                  </button>
+                  <button
+                    class="btn btn-outline-danger w-100"
+                    type="button"
+                    id="clearWorkspaceBtn"
+                  >
+                    Clear localStorage
+                  </button>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/settings.js"></script>
+  </body>
+</html>

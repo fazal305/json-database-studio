@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JSON Database Studio | Indexes</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/indexes.css" />
+  </head>
+  <body data-page="indexes">
+    <div class="mobile-topbar">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">JD</span>
+        <span class="brand-text"
+          ><span class="brand-title">JSON Database Studio</span
+          ><span class="brand-subtitle">Indexes</span></span
+        >
+      </a>
+      <button class="btn btn-ghost btn-sm" type="button" data-sidebar-toggle>
+        Menu
+      </button>
+    </div>
+    <div class="app-shell">
+      <aside class="app-sidebar" id="appSidebar"></aside>
+      <main class="app-main">
+        <section class="page">
+          <header class="page-header">
+            <div>
+              <p class="page-kicker">Lookup Structures</p>
+              <h1 class="page-title">Indexes</h1>
+              <p class="page-description">
+                Create real index definitions over table columns, detect unique
+                conflicts, and compare timed linear scans against `Map` lookups.
+              </p>
+            </div>
+          </header>
+
+          <div class="indexes-layout">
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Index Catalog</h2>
+                  <p class="panel-subtitle">
+                    Indexes are grouped by their source table.
+                  </p>
+                </div>
+              </div>
+              <div id="indexList"></div>
+            </section>
+
+            <aside class="stack">
+              <section class="panel">
+                <div class="panel-header">
+                  <div>
+                    <h2 class="panel-title">Create Index</h2>
+                    <p class="panel-subtitle">
+                      Choose any current table column.
+                    </p>
+                  </div>
+                </div>
+                <form id="createIndexForm" class="stack">
+                  <label>
+                    <span class="form-label">Table</span>
+                    <select
+                      class="form-select"
+                      id="indexTableSelect"
+                      name="tableId"
+                    ></select>
+                  </label>
+                  <label>
+                    <span class="form-label">Column</span>
+                    <select
+                      class="form-select"
+                      id="indexColumnSelect"
+                      name="columnName"
+                    ></select>
+                  </label>
+                  <label class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      name="unique"
+                      id="indexUniqueInput"
+                    />
+                    <span class="form-check-label">Require unique values</span>
+                  </label>
+                  <button class="btn btn-primary" type="submit">
+                    Create Index
+                  </button>
+                </form>
+                <div id="uniqueWarning"></div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-header">
+                  <div>
+                    <h2 class="panel-title">Compare Lookup Speed</h2>
+                    <p class="panel-subtitle">
+                      Timed with `performance.now()` against real rows.
+                    </p>
+                  </div>
+                </div>
+                <form id="lookupForm" class="stack">
+                  <label>
+                    <span class="form-label">Index</span>
+                    <select
+                      class="form-select"
+                      id="lookupIndexSelect"
+                      name="indexId"
+                    ></select>
+                  </label>
+                  <label>
+                    <span class="form-label">Lookup value</span>
+                    <input
+                      class="form-control"
+                      id="lookupValueInput"
+                      name="value"
+                      placeholder="Value to find"
+                    />
+                  </label>
+                  <button class="btn btn-outline-primary" type="submit">
+                    Run Comparison
+                  </button>
+                </form>
+                <div id="lookupResults"></div>
+              </section>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/indexes.js"></script>
+  </body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JSON Database Studio | Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+  </head>
+  <body data-page="dashboard">
+    <div class="mobile-topbar">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">JD</span>
+        <span class="brand-text">
+          <span class="brand-title">JSON Database Studio</span>
+          <span class="brand-subtitle">Dashboard</span>
+        </span>
+      </a>
+      <button class="btn btn-ghost btn-sm" type="button" data-sidebar-toggle>
+        Menu
+      </button>
+    </div>
+
+    <div class="app-shell">
+      <aside class="app-sidebar" id="appSidebar"></aside>
+      <main class="app-main">
+        <section class="page">
+          <header class="page-header">
+            <div>
+              <p class="page-kicker">Workspace Overview</p>
+              <h1 class="page-title">JSON Database Studio</h1>
+              <p class="page-description">
+                Define real schemas, validate rows, create lookup indexes, model
+                relationships, run SQL-like queries, and move JSON or CSV data
+                through one shared local workspace.
+              </p>
+            </div>
+            <div class="toolbar">
+              <a class="btn btn-primary" href="tables.html">New Table</a>
+              <a class="btn btn-outline-primary" href="query.html"
+                >Open Query Console</a
+              >
+            </div>
+          </header>
+
+          <div class="dashboard-hero">
+            <article class="panel hero-panel">
+              <p class="page-kicker">Browser database engine</p>
+              <h2 class="panel-title fs-3">
+                Everything runs locally from JSON in localStorage.
+              </h2>
+              <p class="page-description">
+                The dashboard reflects the same state used by Tables, Indexes,
+                Relationships, Query Console, Import/Export, and Settings. No
+                mocked counters, no separate demo layer.
+              </p>
+              <div class="hero-actions" id="quickActions"></div>
+            </article>
+            <section
+              class="stats-grid"
+              id="dashboardStats"
+              aria-label="Workspace statistics"
+            ></section>
+          </div>
+
+          <div class="two-column-grid">
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Recently Modified Tables</h2>
+                  <p class="panel-subtitle">
+                    Open, query, or remove tables from the live workspace.
+                  </p>
+                </div>
+              </div>
+              <div id="recentTables" class="recent-table-list"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Recent Activity</h2>
+                  <p class="panel-subtitle">
+                    A persisted trail of schema, index, relationship, and import
+                    changes.
+                  </p>
+                </div>
+              </div>
+              <div id="recentActivityLog" class="activity-list"></div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+.query-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(17rem, 0.6fr);
+  gap: 1rem;
+}
+
+.query-editor-shell {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.query-editor-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 0.8rem;
+  background: color-mix(in srgb, var(--card), var(--bg) 14%);
+  border-bottom: 1px solid var(--border);
+}
+
+.query-editor {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  min-height: 13rem;
+  background: color-mix(in srgb, var(--bg), var(--card) 32%);
+}
+
+.line-gutter {
+  padding: 0.85rem 0.65rem;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--card), var(--bg) 16%);
+  border-right: 1px solid var(--border);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  text-align: right;
+  user-select: none;
+}
+
+.query-input {
+  min-height: 13rem;
+  padding: 0.85rem;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.query-input:focus {
+  outline: 0;
+  box-shadow: none;
+}
+
+.query-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.query-history-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.query-history-item {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.8rem;
+  background: color-mix(in srgb, var(--card), var(--bg) 10%);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 0.7);
+}
+
+.query-history-text {
+  overflow: hidden;
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.parse-error {
+  padding: 0.85rem;
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger), transparent 91%);
+  border: 1px solid color-mix(in srgb, var(--danger), transparent 66%);
+  border-radius: calc(var(--radius) * 0.7);
+}
+
+@media (max-width: 1020px) {
+  .query-layout {
+    grid-template-columns: 1fr;
+  }
+}

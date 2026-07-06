@@ -1,0 +1,112 @@
+.relationships-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+  gap: 1rem;
+}
+
+.diagram-stage {
+  position: relative;
+  min-height: 34rem;
+  overflow: auto;
+  background:
+    linear-gradient(
+      color-mix(in srgb, var(--text), transparent 96%) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--text), transparent 96%) 1px,
+      transparent 1px
+    );
+  background-size: 2rem 2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.er-canvas {
+  position: relative;
+  min-width: 52rem;
+  min-height: 34rem;
+  padding: 1rem;
+}
+
+.er-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.er-line {
+  stroke: var(--primary);
+  stroke-width: 2;
+  fill: none;
+  marker-end: url(#arrowHead);
+}
+
+.er-table {
+  position: absolute;
+  width: 14rem;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--card), var(--bg) 8%);
+  border: 1px solid color-mix(in srgb, var(--primary), transparent 62%);
+  border-radius: calc(var(--radius) * 0.72);
+  box-shadow: 0 0.8rem 2rem color-mix(in srgb, var(--shadow), transparent 50%);
+  cursor: pointer;
+}
+
+.er-table.active {
+  border-color: var(--primary);
+  box-shadow: var(--focus-ring);
+}
+
+.er-table-header {
+  padding: 0.7rem 0.8rem;
+  color: var(--bg);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  font-weight: 850;
+}
+
+.er-column-list {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.55rem;
+}
+
+.er-column {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: calc(var(--radius) * 0.45);
+}
+
+.er-column:hover {
+  background: color-mix(in srgb, var(--primary), transparent 92%);
+}
+
+.relationship-list,
+.integrity-results {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.relationship-card,
+.orphan-card {
+  padding: 0.85rem;
+  background: color-mix(in srgb, var(--card), var(--bg) 10%);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 0.7);
+}
+
+.orphan-card {
+  border-color: color-mix(in srgb, var(--danger), transparent 68%);
+}
+
+@media (max-width: 1080px) {
+  .relationships-layout {
+    grid-template-columns: 1fr;
+  }
+}
