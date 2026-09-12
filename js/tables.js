@@ -226,6 +226,7 @@
             ${column.type === "boolean"
               ? `<select class="form-select" name="${escapeHtml(column.name)}"><option value="">null</option><option value="true">true</option><option value="false">false</option></select>`
               : `<input class="form-control" name="${escapeHtml(column.name)}" type="${column.type === "date" ? "date" : "text"}" placeholder="${escapeHtml(String(column.defaultValue ?? ""))}">`}
+            <div class="invalid-feedback" data-field-error="${escapeHtml(column.name)}"></div>
           </label>
         `).join("")}
         <button class="btn btn-primary align-self-end" type="submit">Save Row</button>
@@ -273,24 +274,46 @@
     return String(value);
   }
 
-  function addRow(tableId, rowData) {
+  function clearFieldErrors(form) {
+    if (!form) return;
+    form.querySelectorAll("[data-field-error]").forEach((el) => { el.textContent = ""; });
+    form.querySelectorAll(".is-invalid").forEach((el) => el.classList.remove("is-invalid"));
+  }
+
+  function showFieldErrors(form, table, errors) {
+    if (!form) return;
+    errors.forEach((message) => {
+      const column = table.columns.find((item) => message.startsWith(`${item.name} `));
+      if (!column) return;
+      const field = form.querySelector(`[name="${CSS.escape(column.name)}"]`);
+      const errorEl = form.querySelector(`[data-field-error="${CSS.escape(column.name)}"]`);
+      if (field) field.classList.add("is-invalid");
+      if (errorEl) errorEl.textContent = message;
+    });
+  }
+
+  function addRow(tableId, rowData, form) {
     selectedTableId = tableId || selectedTableId;
     const table = currentTable();
     if (!table) return;
     const validation = validateRow(table, rowData);
+    if (form) clearFieldErrors(form);
     if (!validation.valid) {
       showStatus(validation.errors.join("; "), "danger");
-      return;
+      if (form) showFieldErrors(form, table, validation.errors);
+      return false;
     }
     persistTableChange((target) => {
       target.rows.push(validation.row);
     }, { action: "Added row", detail: `Added a row to '${table.name}'` });
     renderAll();
     showStatus("Row added");
+    return true;
   }
 
-  function editCell(tableId, rowId, columnName, value) {
+  function editCell(tableId, rowId, columnName, value, cellEl) {
     selectedTableId = tableId || selectedTableId;
+    let cellError = null;
     persistTableChange((table) => {
       const row = table.rows.find((item) => item._id === rowId);
       const column = table.columns.find((item) => item.name === columnName);
@@ -298,12 +321,22 @@
       const candidate = { ...row, [columnName]: value };
       const validation = validateRow(table, candidate);
       if (!validation.valid) {
-        showStatus(validation.errors.join("; "), "danger");
+        cellError = validation.errors.find((message) => message.startsWith(`${columnName} `)) || validation.errors.join("; ");
+        showStatus(cellError, "danger");
         return;
       }
       Object.assign(row, validation.row);
     }, { action: "Edited cell", detail: `Updated '${columnName}' in '${currentTable()?.name || "table"}'` });
-    renderAll();
+    if (cellEl) {
+      if (cellError) {
+        cellEl.classList.add("is-invalid");
+        cellEl.title = cellError;
+      } else {
+        cellEl.classList.remove("is-invalid");
+        cellEl.removeAttribute("title");
+      }
+    }
+    if (!cellError) renderAll();
   }
 
   function deleteRow(tableId, rowId) {
@@ -376,7 +409,7 @@
 
     document.addEventListener("blur", (event) => {
       const cell = event.target.closest("[data-cell]");
-      if (cell) editCell(selectedTableId, cell.closest("[data-row-id]").dataset.rowId, cell.dataset.cell, cell.textContent.trim());
+      if (cell) editCell(selectedTableId, cell.closest("[data-row-id]").dataset.rowId, cell.dataset.cell, cell.textContent.trim(), cell);
     }, true);
 
     document.getElementById("rowSearchInput").addEventListener("input", (event) => {
@@ -388,8 +421,8 @@
       if (event.target.id !== "addRowForm") return;
       event.preventDefault();
       const data = Object.fromEntries(new FormData(event.target).entries());
-      addRow(selectedTableId, data);
-      event.target.reset();
+      const added = addRow(selectedTableId, data, event.target);
+      if (added) event.target.reset();
     });
   }
 
