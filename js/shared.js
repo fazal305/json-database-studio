@@ -7,7 +7,7 @@
     settings: {
       compactSidebar: false,
       transitionSpeedMs: 320,
-      defaultQueryPageSize: 25
+      defaultQueryPageSize: 25,
     },
     theme: {
       bg: "#040712",
@@ -21,25 +21,35 @@
       warning: "#facc15",
       danger: "#fb7185",
       radius: 18,
-      fontFamily: "Inter, sans-serif"
+      fontFamily: "Inter, sans-serif",
     },
     database: {
       tables: [],
       indexes: [],
-      relationships: []
+      relationships: [],
     },
     queryHistory: [],
-    activityLog: []
+    activityLog: [],
   };
 
   const navItems = [
     { page: "dashboard", href: "index.html", label: "Dashboard", icon: "DB" },
     { page: "tables", href: "tables.html", label: "Tables", icon: "TB" },
     { page: "indexes", href: "indexes.html", label: "Indexes", icon: "IX" },
-    { page: "relationships", href: "relationships.html", label: "Relationships", icon: "ER" },
+    {
+      page: "relationships",
+      href: "relationships.html",
+      label: "Relationships",
+      icon: "ER",
+    },
     { page: "query", href: "query.html", label: "Query Console", icon: "QL" },
-    { page: "import-export", href: "import-export.html", label: "Import/Export", icon: "IO" },
-    { page: "settings", href: "settings.html", label: "Settings", icon: "ST" }
+    {
+      page: "import-export",
+      href: "import-export.html",
+      label: "Import/Export",
+      icon: "IO",
+    },
+    { page: "settings", href: "settings.html", label: "Settings", icon: "ST" },
   ];
 
   function clone(value) {
@@ -78,12 +88,22 @@
       settings: { ...base.settings, ...(workspace.settings || {}) },
       theme: { ...base.theme, ...(workspace.theme || {}) },
       database: {
-        tables: Array.isArray(workspace.database?.tables) ? workspace.database.tables : base.database.tables,
-        indexes: Array.isArray(workspace.database?.indexes) ? workspace.database.indexes : base.database.indexes,
-        relationships: Array.isArray(workspace.database?.relationships) ? workspace.database.relationships : base.database.relationships
+        tables: Array.isArray(workspace.database?.tables)
+          ? workspace.database.tables
+          : base.database.tables,
+        indexes: Array.isArray(workspace.database?.indexes)
+          ? workspace.database.indexes
+          : base.database.indexes,
+        relationships: Array.isArray(workspace.database?.relationships)
+          ? workspace.database.relationships
+          : base.database.relationships,
       },
-      queryHistory: Array.isArray(workspace.queryHistory) ? workspace.queryHistory : base.queryHistory,
-      activityLog: Array.isArray(workspace.activityLog) ? workspace.activityLog : base.activityLog
+      queryHistory: Array.isArray(workspace.queryHistory)
+        ? workspace.queryHistory
+        : base.queryHistory,
+      activityLog: Array.isArray(workspace.activityLog)
+        ? workspace.activityLog
+        : base.activityLog,
     };
   }
 
@@ -123,72 +143,296 @@
         id: usersId,
         name: "users",
         columns: [
-          { id: generateId("col"), name: "id", type: "number", primaryKey: true, required: true, defaultValue: null },
-          { id: generateId("col"), name: "name", type: "string", primaryKey: false, required: true, defaultValue: "" },
-          { id: generateId("col"), name: "email", type: "string", primaryKey: false, required: true, defaultValue: "" },
-          { id: generateId("col"), name: "age", type: "number", primaryKey: false, required: false, defaultValue: null },
-          { id: generateId("col"), name: "isActive", type: "boolean", primaryKey: false, required: true, defaultValue: true }
+          {
+            id: generateId("col"),
+            name: "id",
+            type: "number",
+            primaryKey: true,
+            required: true,
+            defaultValue: null,
+          },
+          {
+            id: generateId("col"),
+            name: "name",
+            type: "string",
+            primaryKey: false,
+            required: true,
+            defaultValue: "",
+          },
+          {
+            id: generateId("col"),
+            name: "email",
+            type: "string",
+            primaryKey: false,
+            required: true,
+            defaultValue: "",
+          },
+          {
+            id: generateId("col"),
+            name: "age",
+            type: "number",
+            primaryKey: false,
+            required: false,
+            defaultValue: null,
+          },
+          {
+            id: generateId("col"),
+            name: "isActive",
+            type: "boolean",
+            primaryKey: false,
+            required: true,
+            defaultValue: true,
+          },
         ],
         rows: [
-          { _id: generateId("row"), id: 1, name: "Ali Khan", email: "ali@example.com", age: 31, isActive: true },
-          { _id: generateId("row"), id: 2, name: "Sara Ahmed", email: "sara@example.com", age: 27, isActive: true },
-          { _id: generateId("row"), id: 3, name: "Mina Patel", email: "mina@example.com", age: 42, isActive: false }
+          {
+            _id: generateId("row"),
+            id: 1,
+            name: "Ali Khan",
+            email: "ali@example.com",
+            age: 31,
+            isActive: true,
+          },
+          {
+            _id: generateId("row"),
+            id: 2,
+            name: "Sara Ahmed",
+            email: "sara@example.com",
+            age: 27,
+            isActive: true,
+          },
+          {
+            _id: generateId("row"),
+            id: 3,
+            name: "Mina Patel",
+            email: "mina@example.com",
+            age: 42,
+            isActive: false,
+          },
         ],
         createdAt,
-        updatedAt: createdAt
+        updatedAt: createdAt,
       },
       {
         id: productsId,
         name: "products",
         columns: [
-          { id: generateId("col"), name: "id", type: "number", primaryKey: true, required: true, defaultValue: null },
-          { id: generateId("col"), name: "name", type: "string", primaryKey: false, required: true, defaultValue: "" },
-          { id: generateId("col"), name: "price", type: "number", primaryKey: false, required: true, defaultValue: 0 },
-          { id: generateId("col"), name: "category", type: "string", primaryKey: false, required: true, defaultValue: "" }
+          {
+            id: generateId("col"),
+            name: "id",
+            type: "number",
+            primaryKey: true,
+            required: true,
+            defaultValue: null,
+          },
+          {
+            id: generateId("col"),
+            name: "name",
+            type: "string",
+            primaryKey: false,
+            required: true,
+            defaultValue: "",
+          },
+          {
+            id: generateId("col"),
+            name: "price",
+            type: "number",
+            primaryKey: false,
+            required: true,
+            defaultValue: 0,
+          },
+          {
+            id: generateId("col"),
+            name: "category",
+            type: "string",
+            primaryKey: false,
+            required: true,
+            defaultValue: "",
+          },
         ],
         rows: [
-          { _id: generateId("row"), id: 101, name: "Analytics Seat", price: 49, category: "software" },
-          { _id: generateId("row"), id: 102, name: "Support Plan", price: 199, category: "service" },
-          { _id: generateId("row"), id: 103, name: "Data Connector", price: 89, category: "integration" }
+          {
+            _id: generateId("row"),
+            id: 101,
+            name: "Analytics Seat",
+            price: 49,
+            category: "software",
+          },
+          {
+            _id: generateId("row"),
+            id: 102,
+            name: "Support Plan",
+            price: 199,
+            category: "service",
+          },
+          {
+            _id: generateId("row"),
+            id: 103,
+            name: "Data Connector",
+            price: 89,
+            category: "integration",
+          },
         ],
         createdAt,
-        updatedAt: createdAt
+        updatedAt: createdAt,
       },
       {
         id: ordersId,
         name: "orders",
         columns: [
-          { id: generateId("col"), name: "id", type: "number", primaryKey: true, required: true, defaultValue: null },
-          { id: generateId("col"), name: "userId", type: "number", primaryKey: false, required: true, defaultValue: null },
-          { id: generateId("col"), name: "productId", type: "number", primaryKey: false, required: true, defaultValue: null },
-          { id: generateId("col"), name: "quantity", type: "number", primaryKey: false, required: true, defaultValue: 1 },
-          { id: generateId("col"), name: "orderDate", type: "date", primaryKey: false, required: true, defaultValue: "" }
+          {
+            id: generateId("col"),
+            name: "id",
+            type: "number",
+            primaryKey: true,
+            required: true,
+            defaultValue: null,
+          },
+          {
+            id: generateId("col"),
+            name: "userId",
+            type: "number",
+            primaryKey: false,
+            required: true,
+            defaultValue: null,
+          },
+          {
+            id: generateId("col"),
+            name: "productId",
+            type: "number",
+            primaryKey: false,
+            required: true,
+            defaultValue: null,
+          },
+          {
+            id: generateId("col"),
+            name: "quantity",
+            type: "number",
+            primaryKey: false,
+            required: true,
+            defaultValue: 1,
+          },
+          {
+            id: generateId("col"),
+            name: "orderDate",
+            type: "date",
+            primaryKey: false,
+            required: true,
+            defaultValue: "",
+          },
         ],
         rows: [
-          { _id: generateId("row"), id: 5001, userId: 1, productId: 101, quantity: 2, orderDate: "2026-06-12" },
-          { _id: generateId("row"), id: 5002, userId: 2, productId: 102, quantity: 1, orderDate: "2026-06-19" },
-          { _id: generateId("row"), id: 5003, userId: 1, productId: 103, quantity: 3, orderDate: "2026-07-01" }
+          {
+            _id: generateId("row"),
+            id: 5001,
+            userId: 1,
+            productId: 101,
+            quantity: 2,
+            orderDate: "2026-06-12",
+          },
+          {
+            _id: generateId("row"),
+            id: 5002,
+            userId: 2,
+            productId: 102,
+            quantity: 1,
+            orderDate: "2026-06-19",
+          },
+          {
+            _id: generateId("row"),
+            id: 5003,
+            userId: 1,
+            productId: 103,
+            quantity: 3,
+            orderDate: "2026-07-01",
+          },
         ],
         createdAt,
-        updatedAt: createdAt
-      }
+        updatedAt: createdAt,
+      },
     ];
     workspace.database.indexes = [
-      { id: generateId("index"), tableId: usersId, columnName: "email", unique: true, createdAt },
-      { id: generateId("index"), tableId: ordersId, columnName: "userId", unique: false, createdAt }
+      {
+        id: generateId("index"),
+        tableId: usersId,
+        columnName: "email",
+        unique: true,
+        createdAt,
+      },
+      {
+        id: generateId("index"),
+        tableId: ordersId,
+        columnName: "userId",
+        unique: false,
+        createdAt,
+      },
     ];
     workspace.database.relationships = [
-      { id: generateId("rel"), name: "orders_users", fromTableId: ordersId, fromColumn: "userId", toTableId: usersId, toColumn: "id", type: "many-to-one", createdAt },
-      { id: generateId("rel"), name: "orders_products", fromTableId: ordersId, fromColumn: "productId", toTableId: productsId, toColumn: "id", type: "many-to-one", createdAt }
+      {
+        id: generateId("rel"),
+        name: "orders_users",
+        fromTableId: ordersId,
+        fromColumn: "userId",
+        toTableId: usersId,
+        toColumn: "id",
+        type: "many-to-one",
+        createdAt,
+      },
+      {
+        id: generateId("rel"),
+        name: "orders_products",
+        fromTableId: ordersId,
+        fromColumn: "productId",
+        toTableId: productsId,
+        toColumn: "id",
+        type: "many-to-one",
+        createdAt,
+      },
     ];
     workspace.queryHistory = [
-      { id: generateId("query"), queryText: "SELECT * FROM users WHERE age > 18 ORDER BY name ASC LIMIT 10", favorite: true, rowsReturned: 3, executionMs: 1.2, usedIndex: false, createdAt },
-      { id: generateId("query"), queryText: "SELECT users.name, orders.quantity FROM users JOIN orders ON users.id = orders.userId WHERE orders.quantity >= 2", favorite: false, rowsReturned: 2, executionMs: 1.8, usedIndex: true, createdAt }
+      {
+        id: generateId("query"),
+        queryText:
+          "SELECT * FROM users WHERE age > 18 ORDER BY name ASC LIMIT 10",
+        favorite: true,
+        rowsReturned: 3,
+        executionMs: 1.2,
+        usedIndex: false,
+        createdAt,
+      },
+      {
+        id: generateId("query"),
+        queryText:
+          "SELECT users.name, orders.quantity FROM users JOIN orders ON users.id = orders.userId WHERE orders.quantity >= 2",
+        favorite: false,
+        rowsReturned: 2,
+        executionMs: 1.8,
+        usedIndex: true,
+        createdAt,
+      },
     ];
     workspace.activityLog = [
-      { id: generateId("log"), module: "Tables", action: "Seeded demo tables", detail: "Created users, products, and orders tables", createdAt },
-      { id: generateId("log"), module: "Indexes", action: "Seeded indexes", detail: "Created email and userId lookup indexes", createdAt },
-      { id: generateId("log"), module: "Relationships", action: "Seeded relationships", detail: "Linked orders to users and products", createdAt }
+      {
+        id: generateId("log"),
+        module: "Tables",
+        action: "Seeded demo tables",
+        detail: "Created users, products, and orders tables",
+        createdAt,
+      },
+      {
+        id: generateId("log"),
+        module: "Indexes",
+        action: "Seeded indexes",
+        detail: "Created email and userId lookup indexes",
+        createdAt,
+      },
+      {
+        id: generateId("log"),
+        module: "Relationships",
+        action: "Seeded relationships",
+        detail: "Linked orders to users and products",
+        createdAt,
+      },
     ];
     saveWorkspace(workspace);
     return workspace;
@@ -196,7 +440,13 @@
 
   function addActivityLog(module, action, detail) {
     const workspace = loadWorkspace();
-    workspace.activityLog.unshift({ id: generateId("log"), module, action, detail, createdAt: nowIso() });
+    workspace.activityLog.unshift({
+      id: generateId("log"),
+      module,
+      action,
+      detail,
+      createdAt: nowIso(),
+    });
     workspace.activityLog = workspace.activityLog.slice(0, 80);
     saveWorkspace(workspace);
   }
@@ -205,12 +455,24 @@
     const workspace = loadWorkspace();
     const root = document.documentElement;
     Object.entries(workspace.theme).forEach(([key, value]) => {
-      const cssName = key.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
-      root.style.setProperty(`--${cssName}`, key === "radius" ? `${value}px` : String(value));
+      const cssName = key.replace(
+        /[A-Z]/g,
+        (match) => `-${match.toLowerCase()}`,
+      );
+      root.style.setProperty(
+        `--${cssName}`,
+        key === "radius" ? `${value}px` : String(value),
+      );
     });
     root.style.setProperty("--overlay", workspace.theme.bg);
-    root.style.setProperty("--transition-speed", `${workspace.settings.transitionSpeedMs}ms`);
-    document.body.classList.toggle("compact-sidebar", Boolean(workspace.settings.compactSidebar));
+    root.style.setProperty(
+      "--transition-speed",
+      `${workspace.settings.transitionSpeedMs}ms`,
+    );
+    document.body.classList.toggle(
+      "compact-sidebar",
+      Boolean(workspace.settings.compactSidebar),
+    );
   }
 
   function renderSidebar(activePage) {
@@ -225,12 +487,16 @@
           </span>
         </a>
         <nav class="sidebar-nav" aria-label="Primary">
-          ${navItems.map((item) => `
+          ${navItems
+            .map(
+              (item) => `
             <a class="nav-link ${item.page === current ? "active" : ""}" href="${item.href}" data-page="${item.page}">
               <span class="nav-icon">${escapeHtml(item.icon)}</span>
               <span class="nav-label">${escapeHtml(item.label)}</span>
             </a>
-          `).join("")}
+          `,
+            )
+            .join("")}
         </nav>
         <div class="sidebar-footer">Data persists in this browser through localStorage.</div>
       </aside>`;
@@ -265,7 +531,11 @@
   }
 
   function downloadJson(filename, data) {
-    downloadTextFile(filename, JSON.stringify(data, null, 2), "application/json");
+    downloadTextFile(
+      filename,
+      JSON.stringify(data, null, 2),
+      "application/json",
+    );
   }
 
   function downloadTextFile(filename, content, type = "text/plain") {
@@ -282,7 +552,9 @@
 
   function copyText(text, message = "Copied to clipboard") {
     if (navigator.clipboard) {
-      return navigator.clipboard.writeText(text).then(() => showStatus(message));
+      return navigator.clipboard
+        .writeText(text)
+        .then(() => showStatus(message));
     }
     const input = document.createElement("textarea");
     input.value = text;
@@ -307,7 +579,11 @@
   }
 
   function getTableByName(database, name) {
-    return database.tables.find((table) => table.name.toLowerCase() === String(name).toLowerCase()) || null;
+    return (
+      database.tables.find(
+        (table) => table.name.toLowerCase() === String(name).toLowerCase(),
+      ) || null
+    );
   }
 
   function castValue(type, value) {
@@ -340,9 +616,12 @@
         errors.push(`${column.name} is required`);
       }
       if (value !== null && value !== "") {
-        if (column.type === "number" && typeof value !== "number") errors.push(`${column.name} must be a number`);
-        if (column.type === "boolean" && typeof value !== "boolean") errors.push(`${column.name} must be true or false`);
-        if (column.type === "date" && Number.isNaN(new Date(value).getTime())) errors.push(`${column.name} must be a valid date`);
+        if (column.type === "number" && typeof value !== "number")
+          errors.push(`${column.name} must be a number`);
+        if (column.type === "boolean" && typeof value !== "boolean")
+          errors.push(`${column.name} must be true or false`);
+        if (column.type === "date" && Number.isNaN(new Date(value).getTime()))
+          errors.push(`${column.name} must be a valid date`);
       }
       cleaned[column.name] = value;
     });
@@ -350,9 +629,16 @@
   }
 
   function inferColumnType(value) {
-    if (typeof value === "boolean" || /^(true|false)$/i.test(String(value))) return "boolean";
-    if (value !== "" && value !== null && Number.isFinite(Number(value))) return "number";
-    if (value && !Number.isNaN(new Date(value).getTime()) && /^\d{4}-\d{1,2}-\d{1,2}/.test(String(value))) return "date";
+    if (typeof value === "boolean" || /^(true|false)$/i.test(String(value)))
+      return "boolean";
+    if (value !== "" && value !== null && Number.isFinite(Number(value)))
+      return "number";
+    if (
+      value &&
+      !Number.isNaN(new Date(value).getTime()) &&
+      /^\d{4}-\d{1,2}-\d{1,2}/.test(String(value))
+    )
+      return "date";
     return "string";
   }
 
@@ -379,7 +665,9 @@
       const fromTable = getTableById(database, relationship.fromTableId);
       const toTable = getTableById(database, relationship.toTableId);
       if (!fromTable || !toTable) return;
-      const targetValues = new Set(toTable.rows.map((row) => row[relationship.toColumn]));
+      const targetValues = new Set(
+        toTable.rows.map((row) => row[relationship.toColumn]),
+      );
       fromTable.rows.forEach((row) => {
         const value = row[relationship.fromColumn];
         if (value !== null && value !== "" && !targetValues.has(value)) {
@@ -394,7 +682,9 @@
     const tables = database.tables;
     if (!containerEl) return;
     if (!tables.length) {
-      containerEl.innerHTML = renderEmptyState("Create tables to see the ER diagram.");
+      containerEl.innerHTML = renderEmptyState(
+        "Create tables to see the ER diagram.",
+      );
       return;
     }
     const columns = Math.ceil(Math.sqrt(tables.length));
@@ -405,37 +695,48 @@
     tables.forEach((table, index) => {
       positions.set(table.id, {
         x: 24 + (index % columns) * xGap,
-        y: 24 + Math.floor(index / columns) * yGap
+        y: 24 + Math.floor(index / columns) * yGap,
       });
     });
     const width = Math.max(820, columns * xGap + boxWidth);
-    const height = Math.max(540, Math.ceil(tables.length / columns) * yGap + 220);
-    const lines = database.relationships.map((relationship) => {
-      const from = positions.get(relationship.fromTableId);
-      const to = positions.get(relationship.toTableId);
-      if (!from || !to) return "";
-      const startX = from.x + boxWidth;
-      const startY = from.y + 52;
-      const endX = to.x;
-      const endY = to.y + 52;
-      const midX = (startX + endX) / 2;
-      return `<path class="er-line" d="M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}" />`;
-    }).join("");
-    const boxes = tables.map((table) => {
-      const pos = positions.get(table.id);
-      return `
+    const height = Math.max(
+      540,
+      Math.ceil(tables.length / columns) * yGap + 220,
+    );
+    const lines = database.relationships
+      .map((relationship) => {
+        const from = positions.get(relationship.fromTableId);
+        const to = positions.get(relationship.toTableId);
+        if (!from || !to) return "";
+        const startX = from.x + boxWidth;
+        const startY = from.y + 52;
+        const endX = to.x;
+        const endY = to.y + 52;
+        const midX = (startX + endX) / 2;
+        return `<path class="er-line" d="M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}" />`;
+      })
+      .join("");
+    const boxes = tables
+      .map((table) => {
+        const pos = positions.get(table.id);
+        return `
         <button class="er-table" data-table-id="${table.id}" style="left:${pos.x}px;top:${pos.y}px" type="button">
           <div class="er-table-header">${escapeHtml(table.name)}</div>
           <div class="er-column-list">
-            ${table.columns.map((column) => `
+            ${table.columns
+              .map(
+                (column) => `
               <div class="er-column">
                 <span>${escapeHtml(column.name)}</span>
                 <span class="type-pill">${escapeHtml(column.type)}</span>
               </div>
-            `).join("")}
+            `,
+              )
+              .join("")}
           </div>
         </button>`;
-    }).join("");
+      })
+      .join("");
     containerEl.innerHTML = `
       <div class="er-canvas" style="width:${width}px;height:${height}px">
         <svg class="er-lines" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
@@ -467,7 +768,8 @@
           value += queryText[i];
           i += 1;
         }
-        if (queryText[i] !== quote) throw new Error("Unterminated string literal");
+        if (queryText[i] !== quote)
+          throw new Error("Unterminated string literal");
         i += 1;
         tokens.push({ type: "string", value });
         continue;
@@ -506,8 +808,26 @@
           i += 1;
         }
         const upper = value.toUpperCase();
-        const keywords = ["SELECT", "FROM", "JOIN", "ON", "WHERE", "ORDER", "BY", "ASC", "DESC", "LIMIT", "AND", "OR", "LIKE"];
-        tokens.push({ type: keywords.includes(upper) ? "keyword" : "identifier", value, upper });
+        const keywords = [
+          "SELECT",
+          "FROM",
+          "JOIN",
+          "ON",
+          "WHERE",
+          "ORDER",
+          "BY",
+          "ASC",
+          "DESC",
+          "LIMIT",
+          "AND",
+          "OR",
+          "LIKE",
+        ];
+        tokens.push({
+          type: keywords.includes(upper) ? "keyword" : "identifier",
+          value,
+          upper,
+        });
         continue;
       }
       throw new Error(`Unexpected character '${char}'`);
@@ -533,7 +853,8 @@
     };
     const readIdentifier = (message) => {
       const token = peek();
-      if (!token || !["identifier", "keyword"].includes(token.type)) throw new Error(message || "Expected identifier");
+      if (!token || !["identifier", "keyword"].includes(token.type))
+        throw new Error(message || "Expected identifier");
       pos += 1;
       return token.value;
     };
@@ -567,10 +888,15 @@
       while (peek()) {
         const column = readIdentifier("Expected WHERE column");
         const operatorToken = peek();
-        if (!operatorToken || !["operator", "keyword"].includes(operatorToken.type)) throw new Error("Expected WHERE operator");
+        if (
+          !operatorToken ||
+          !["operator", "keyword"].includes(operatorToken.type)
+        )
+          throw new Error("Expected WHERE operator");
         pos += 1;
         const operator = String(operatorToken.value).toUpperCase();
-        if (!["=", "!=", ">", "<", ">=", "<=", "LIKE"].includes(operator)) throw new Error(`Unsupported operator ${operator}`);
+        if (!["=", "!=", ">", "<", ">=", "<=", "LIKE"].includes(operator))
+          throw new Error(`Unsupported operator ${operator}`);
         conditions.push({ column, operator, value: readValue() });
         if (match("AND")) connectors.push("AND");
         else if (match("OR")) connectors.push("OR");
@@ -597,17 +923,22 @@
     let orderBy = null;
     if (match("ORDER")) {
       consume("BY", "Expected BY after ORDER");
-      orderBy = { column: readIdentifier("Expected ORDER BY column"), direction: match("DESC") ? "DESC" : "ASC" };
+      orderBy = {
+        column: readIdentifier("Expected ORDER BY column"),
+        direction: match("DESC") ? "DESC" : "ASC",
+      };
       match("ASC");
     }
     let limit = null;
     if (match("LIMIT")) {
       const token = peek();
-      if (!token || token.type !== "number") throw new Error("Expected numeric LIMIT");
+      if (!token || token.type !== "number")
+        throw new Error("Expected numeric LIMIT");
       limit = token.value;
       pos += 1;
     }
-    if (pos < tokens.length) throw new Error(`Unexpected token ${tokens[pos].value}`);
+    if (pos < tokens.length)
+      throw new Error(`Unexpected token ${tokens[pos].value}`);
     return { columns, from, joins, where, orderBy, limit };
   }
 
@@ -636,7 +967,8 @@
     let rowsScanned = 0;
     let usedIndex = false;
     const fromTable = getTableByName(database, parsedQuery.from);
-    if (!fromTable) throw new Error(`Table '${parsedQuery.from}' does not exist`);
+    if (!fromTable)
+      throw new Error(`Table '${parsedQuery.from}' does not exist`);
 
     let rows = fromTable.rows.map((row) => {
       const output = {};
@@ -649,7 +981,8 @@
 
     parsedQuery.joins.forEach((join) => {
       const joinTable = getTableByName(database, join.table);
-      if (!joinTable) throw new Error(`Join table '${join.table}' does not exist`);
+      if (!joinTable)
+        throw new Error(`Join table '${join.table}' does not exist`);
       const joinedRows = [];
       rows.forEach((leftRow) => {
         joinTable.rows.forEach((rightRow) => {
@@ -657,7 +990,8 @@
           if (rowValue(leftRow, join.left) == rowValue(rightRow, join.right)) {
             const merged = { ...leftRow };
             Object.entries(rightRow).forEach(([key, value]) => {
-              if (!Object.prototype.hasOwnProperty.call(merged, key)) merged[key] = value;
+              if (!Object.prototype.hasOwnProperty.call(merged, key))
+                merged[key] = value;
               merged[`${joinTable.name}.${key}`] = value;
             });
             joinedRows.push(merged);
@@ -671,7 +1005,11 @@
       const first = parsedQuery.where.conditions[0];
       const indexed = database.indexes.find((index) => {
         const table = getTableById(database, index.tableId);
-        return table?.name === fromTable.name && index.columnName === first.column && first.operator === "=";
+        return (
+          table?.name === fromTable.name &&
+          index.columnName === first.column &&
+          first.operator === "="
+        );
       });
       if (indexed && !parsedQuery.joins.length) {
         usedIndex = true;
@@ -687,7 +1025,13 @@
       }
       rows = rows.filter((row) => {
         rowsScanned += 1;
-        const results = parsedQuery.where.conditions.map((condition) => compareValues(rowValue(row, condition.column), condition.operator, condition.value));
+        const results = parsedQuery.where.conditions.map((condition) =>
+          compareValues(
+            rowValue(row, condition.column),
+            condition.operator,
+            condition.value,
+          ),
+        );
         return results.reduce((acc, result, index) => {
           const connector = parsedQuery.where.connectors[index - 1] || "AND";
           return connector === "OR" ? acc || result : acc && result;
@@ -708,25 +1052,26 @@
       });
     }
 
-    if (Number.isFinite(parsedQuery.limit)) rows = rows.slice(0, parsedQuery.limit);
+    if (Number.isFinite(parsedQuery.limit))
+      rows = rows.slice(0, parsedQuery.limit);
 
     const selected = parsedQuery.columns.includes("*")
       ? rows
       : rows.map((row) => {
-        const output = {};
-        parsedQuery.columns.forEach((column) => {
-          output[column] = rowValue(row, column);
+          const output = {};
+          parsedQuery.columns.forEach((column) => {
+            output[column] = rowValue(row, column);
+          });
+          return output;
         });
-        return output;
-      });
 
     return {
       rows: selected,
       stats: {
         rowsScanned,
         usedIndex,
-        executionMs: Number((performance.now() - started).toFixed(3))
-      }
+        executionMs: Number((performance.now() - started).toFixed(3)),
+      },
     };
   }
 
@@ -817,14 +1162,31 @@
     hideTransitionOverlay();
     document.addEventListener("click", (event) => {
       const link = event.target.closest("a[href]");
-      if (!link || link.target === "_blank" || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (
+        !link ||
+        link.target === "_blank" ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      )
+        return;
       const url = new URL(link.getAttribute("href"), window.location.href);
-      if (url.origin !== window.location.origin || url.pathname === window.location.pathname) return;
+      if (
+        url.origin !== window.location.origin ||
+        url.pathname === window.location.pathname
+      )
+        return;
       event.preventDefault();
       showTransitionOverlay(false);
       const workspace = loadWorkspace();
-      const minDuration = Number(workspace.settings.transitionSpeedMs) || defaultWorkspace.settings.transitionSpeedMs;
-      const loaderTimer = window.setTimeout(() => showTransitionOverlay(true), Math.max(80, minDuration / 2));
+      const minDuration =
+        Number(workspace.settings.transitionSpeedMs) ||
+        defaultWorkspace.settings.transitionSpeedMs;
+      const loaderTimer = window.setTimeout(
+        () => showTransitionOverlay(true),
+        Math.max(80, minDuration / 2),
+      );
       window.setTimeout(() => {
         window.clearTimeout(loaderTimer);
         window.location.href = url.href;
@@ -868,7 +1230,7 @@
     rowsToCsv,
     initPageTransitions,
     showTransitionOverlay,
-    hideTransitionOverlay
+    hideTransitionOverlay,
   };
 
   Object.assign(window, window.JsonDbStudio);

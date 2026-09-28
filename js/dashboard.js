@@ -6,14 +6,32 @@
     const totalRows = tables.reduce((sum, table) => sum + table.rows.length, 0);
     const recentTable = tables
       .slice()
-      .sort((a, b) => new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt))[0];
+      .sort(
+        (a, b) =>
+          new Date(b.updatedAt || b.createdAt) -
+          new Date(a.updatedAt || a.createdAt),
+      )[0];
 
     return [
       { label: "Tables", value: tables.length, meta: "Schemas in workspace" },
       { label: "Rows", value: totalRows, meta: "Across every table" },
-      { label: "Indexes", value: workspace.database.indexes.length, meta: "Lookup maps available" },
-      { label: "Relationships", value: workspace.database.relationships.length, meta: "Foreign-key links" },
-      { label: "Recently Modified", value: recentTable ? recentTable.name : "None", meta: recentTable ? formatTimestamp(recentTable.updatedAt) : "No tables yet" }
+      {
+        label: "Indexes",
+        value: workspace.database.indexes.length,
+        meta: "Lookup maps available",
+      },
+      {
+        label: "Relationships",
+        value: workspace.database.relationships.length,
+        meta: "Foreign-key links",
+      },
+      {
+        label: "Recently Modified",
+        value: recentTable ? recentTable.name : "None",
+        meta: recentTable
+          ? formatTimestamp(recentTable.updatedAt)
+          : "No tables yet",
+      },
     ];
   }
 
@@ -22,13 +40,17 @@
     const target = document.getElementById("dashboardStats");
     if (!target) return;
 
-    target.innerHTML = getWorkspaceStats(workspace).map((stat) => `
+    target.innerHTML = getWorkspaceStats(workspace)
+      .map(
+        (stat) => `
       <article class="stat-card">
         <p class="stat-label">${escapeHtml(stat.label)}</p>
         <p class="stat-value">${escapeHtml(stat.value)}</p>
         <p class="stat-meta">${escapeHtml(stat.meta)}</p>
       </article>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 
   function renderQuickActions() {
@@ -36,13 +58,35 @@
     if (!target) return;
 
     const actions = [
-      { href: "tables.html", label: "New Table", detail: "Create a typed schema", icon: "TB" },
-      { href: "query.html", label: "Query Console", detail: "Run SQL-like queries", icon: "QL" },
-      { href: "relationships.html", label: "Relationships", detail: "Model and inspect links", icon: "ER" },
-      { href: "import-export.html", label: "Import/Export", detail: "Move JSON and CSV data", icon: "IO" }
+      {
+        href: "tables.html",
+        label: "New Table",
+        detail: "Create a typed schema",
+        icon: "TB",
+      },
+      {
+        href: "query.html",
+        label: "Query Console",
+        detail: "Run SQL-like queries",
+        icon: "QL",
+      },
+      {
+        href: "relationships.html",
+        label: "Relationships",
+        detail: "Model and inspect links",
+        icon: "ER",
+      },
+      {
+        href: "import-export.html",
+        label: "Import/Export",
+        detail: "Move JSON and CSV data",
+        icon: "IO",
+      },
     ];
 
-    target.innerHTML = actions.map((action) => `
+    target.innerHTML = actions
+      .map(
+        (action) => `
       <a class="action-card flex-grow-1" href="${action.href}">
         <span>
           <strong>${escapeHtml(action.label)}</strong>
@@ -50,7 +94,9 @@
         </span>
         <span class="quick-action-icon">${escapeHtml(action.icon)}</span>
       </a>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 
   function renderRecentTables() {
@@ -60,14 +106,22 @@
 
     const tables = workspace.database.tables
       .slice()
-      .sort((a, b) => new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt));
+      .sort(
+        (a, b) =>
+          new Date(b.updatedAt || b.createdAt) -
+          new Date(a.updatedAt || a.createdAt),
+      );
 
     if (!tables.length) {
-      target.innerHTML = renderEmptyState("No tables yet. Create one from the Tables page.");
+      target.innerHTML = renderEmptyState(
+        "No tables yet. Create one from the Tables page.",
+      );
       return;
     }
 
-    target.innerHTML = tables.map((table) => `
+    target.innerHTML = tables
+      .map(
+        (table) => `
       <article class="recent-table-item">
         <div class="recent-table-top">
           <div>
@@ -87,7 +141,9 @@
           <button class="btn btn-sm btn-outline-danger" type="button" data-delete-table="${escapeHtml(table.id)}">Delete</button>
         </div>
       </article>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 
   function renderRecentActivityLog() {
@@ -97,11 +153,15 @@
 
     const entries = workspace.activityLog.slice(0, 10);
     if (!entries.length) {
-      target.innerHTML = renderEmptyState("Activity will appear here as you work.");
+      target.innerHTML = renderEmptyState(
+        "Activity will appear here as you work.",
+      );
       return;
     }
 
-    target.innerHTML = entries.map((entry) => `
+    target.innerHTML = entries
+      .map(
+        (entry) => `
       <article class="activity-item">
         <div class="activity-top">
           <div>
@@ -112,7 +172,9 @@
         </div>
         <p class="activity-detail">${escapeHtml(entry.detail)}</p>
       </article>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 
   function deleteTableFromDashboard(tableId) {
@@ -121,8 +183,14 @@
     if (!table) return;
 
     const references = [
-      ...workspace.database.indexes.filter((index) => index.tableId === tableId),
-      ...workspace.database.relationships.filter((relationship) => relationship.fromTableId === tableId || relationship.toTableId === tableId)
+      ...workspace.database.indexes.filter(
+        (index) => index.tableId === tableId,
+      ),
+      ...workspace.database.relationships.filter(
+        (relationship) =>
+          relationship.fromTableId === tableId ||
+          relationship.toTableId === tableId,
+      ),
     ];
     const warning = references.length
       ? `Delete '${table.name}' and ${references.length} related index/relationship records?`
@@ -130,15 +198,23 @@
 
     if (!window.confirm(warning)) return;
 
-    workspace.database.tables = workspace.database.tables.filter((item) => item.id !== tableId);
-    workspace.database.indexes = workspace.database.indexes.filter((index) => index.tableId !== tableId);
-    workspace.database.relationships = workspace.database.relationships.filter((relationship) => relationship.fromTableId !== tableId && relationship.toTableId !== tableId);
+    workspace.database.tables = workspace.database.tables.filter(
+      (item) => item.id !== tableId,
+    );
+    workspace.database.indexes = workspace.database.indexes.filter(
+      (index) => index.tableId !== tableId,
+    );
+    workspace.database.relationships = workspace.database.relationships.filter(
+      (relationship) =>
+        relationship.fromTableId !== tableId &&
+        relationship.toTableId !== tableId,
+    );
     workspace.activityLog.unshift({
       id: generateId("log"),
       module: "Dashboard",
       action: "Deleted table",
       detail: `Deleted table '${table.name}' from dashboard quick actions`,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     });
     saveWorkspace(workspace);
     showStatus(`Deleted ${table.name}`, "warning");
@@ -164,7 +240,8 @@
 
   function initDashboard() {
     initPageTransitions();
-    document.getElementById("appSidebar").outerHTML = renderSidebar("dashboard");
+    document.getElementById("appSidebar").outerHTML =
+      renderSidebar("dashboard");
     setActiveNav();
     renderDashboardStats();
     renderQuickActions();

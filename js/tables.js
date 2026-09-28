@@ -9,34 +9,118 @@
       id: "users",
       name: "users",
       columns: [
-        { name: "id", type: "number", primaryKey: true, required: true, defaultValue: null },
-        { name: "name", type: "string", primaryKey: false, required: true, defaultValue: "" },
-        { name: "email", type: "string", primaryKey: false, required: true, defaultValue: "" },
-        { name: "age", type: "number", primaryKey: false, required: false, defaultValue: null },
-        { name: "isActive", type: "boolean", primaryKey: false, required: true, defaultValue: true }
-      ]
+        {
+          name: "id",
+          type: "number",
+          primaryKey: true,
+          required: true,
+          defaultValue: null,
+        },
+        {
+          name: "name",
+          type: "string",
+          primaryKey: false,
+          required: true,
+          defaultValue: "",
+        },
+        {
+          name: "email",
+          type: "string",
+          primaryKey: false,
+          required: true,
+          defaultValue: "",
+        },
+        {
+          name: "age",
+          type: "number",
+          primaryKey: false,
+          required: false,
+          defaultValue: null,
+        },
+        {
+          name: "isActive",
+          type: "boolean",
+          primaryKey: false,
+          required: true,
+          defaultValue: true,
+        },
+      ],
     },
     {
       id: "products",
       name: "products",
       columns: [
-        { name: "id", type: "number", primaryKey: true, required: true, defaultValue: null },
-        { name: "name", type: "string", primaryKey: false, required: true, defaultValue: "" },
-        { name: "price", type: "number", primaryKey: false, required: true, defaultValue: 0 },
-        { name: "category", type: "string", primaryKey: false, required: true, defaultValue: "" }
-      ]
+        {
+          name: "id",
+          type: "number",
+          primaryKey: true,
+          required: true,
+          defaultValue: null,
+        },
+        {
+          name: "name",
+          type: "string",
+          primaryKey: false,
+          required: true,
+          defaultValue: "",
+        },
+        {
+          name: "price",
+          type: "number",
+          primaryKey: false,
+          required: true,
+          defaultValue: 0,
+        },
+        {
+          name: "category",
+          type: "string",
+          primaryKey: false,
+          required: true,
+          defaultValue: "",
+        },
+      ],
     },
     {
       id: "orders",
       name: "orders",
       columns: [
-        { name: "id", type: "number", primaryKey: true, required: true, defaultValue: null },
-        { name: "userId", type: "number", primaryKey: false, required: true, defaultValue: null },
-        { name: "productId", type: "number", primaryKey: false, required: true, defaultValue: null },
-        { name: "quantity", type: "number", primaryKey: false, required: true, defaultValue: 1 },
-        { name: "orderDate", type: "date", primaryKey: false, required: true, defaultValue: "" }
-      ]
-    }
+        {
+          name: "id",
+          type: "number",
+          primaryKey: true,
+          required: true,
+          defaultValue: null,
+        },
+        {
+          name: "userId",
+          type: "number",
+          primaryKey: false,
+          required: true,
+          defaultValue: null,
+        },
+        {
+          name: "productId",
+          type: "number",
+          primaryKey: false,
+          required: true,
+          defaultValue: null,
+        },
+        {
+          name: "quantity",
+          type: "number",
+          primaryKey: false,
+          required: true,
+          defaultValue: 1,
+        },
+        {
+          name: "orderDate",
+          type: "date",
+          primaryKey: false,
+          required: true,
+          defaultValue: "",
+        },
+      ],
+    },
   ];
 
   function currentTable() {
@@ -49,7 +133,13 @@
     if (!table) return null;
     mutator(table, workspace);
     table.updatedAt = new Date().toISOString();
-    if (activity) workspace.activityLog.unshift({ id: generateId("log"), module: "Tables", ...activity, createdAt: new Date().toISOString() });
+    if (activity)
+      workspace.activityLog.unshift({
+        id: generateId("log"),
+        module: "Tables",
+        ...activity,
+        createdAt: new Date().toISOString(),
+      });
     saveWorkspace(workspace);
     return table;
   }
@@ -62,14 +152,21 @@
   function renderTableList() {
     const workspace = loadWorkspace();
     const target = document.getElementById("tableList");
-    const search = String(document.getElementById("tableSearchInput").value || "").toLowerCase();
-    const tables = workspace.database.tables.filter((table) => table.name.toLowerCase().includes(search));
-    if (!selectedTableId && workspace.database.tables[0]) selectedTableId = workspace.database.tables[0].id;
+    const search = String(
+      document.getElementById("tableSearchInput").value || "",
+    ).toLowerCase();
+    const tables = workspace.database.tables.filter((table) =>
+      table.name.toLowerCase().includes(search),
+    );
+    if (!selectedTableId && workspace.database.tables[0])
+      selectedTableId = workspace.database.tables[0].id;
     if (!tables.length) {
       target.innerHTML = renderEmptyState("No matching tables.");
       return;
     }
-    target.innerHTML = tables.map((table) => `
+    target.innerHTML = tables
+      .map(
+        (table) => `
       <button class="table-list-item ${table.id === selectedTableId ? "active" : ""}" type="button" data-select-table="${table.id}">
         <strong>${escapeHtml(table.name)}</strong>
         <span class="muted small">${escapeHtml(formatTimestamp(table.updatedAt || table.createdAt))}</span>
@@ -78,7 +175,9 @@
           <span class="chip">${table.rows.length} rows</span>
         </span>
       </button>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 
   function createTable() {
@@ -94,13 +193,28 @@
     const table = {
       id: generateId("table"),
       name: slug,
-      columns: [{ id: generateId("col"), name: "id", type: "number", primaryKey: true, required: true, defaultValue: null }],
+      columns: [
+        {
+          id: generateId("col"),
+          name: "id",
+          type: "number",
+          primaryKey: true,
+          required: true,
+          defaultValue: null,
+        },
+      ],
       rows: [],
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
     workspace.database.tables.push(table);
-    workspace.activityLog.unshift({ id: generateId("log"), module: "Tables", action: "Created table", detail: `Created table '${slug}'`, createdAt: now });
+    workspace.activityLog.unshift({
+      id: generateId("log"),
+      module: "Tables",
+      action: "Created table",
+      detail: `Created table '${slug}'`,
+      createdAt: now,
+    });
     saveWorkspace(workspace);
     selectedTableId = table.id;
     renderAll();
@@ -109,54 +223,94 @@
 
   function addColumnToSchema(tableId) {
     selectedTableId = tableId || selectedTableId;
-    persistTableChange((table) => {
-      let base = "new_column";
-      let name = base;
-      let count = 2;
-      while (table.columns.some((column) => column.name === name)) {
-        name = `${base}_${count}`;
-        count += 1;
-      }
-      table.columns.push({ id: generateId("col"), name, type: "string", primaryKey: false, required: false, defaultValue: "" });
-      table.rows.forEach((row) => { row[name] = ""; });
-    }, { action: "Added column", detail: "Added a new schema column" });
+    persistTableChange(
+      (table) => {
+        let base = "new_column";
+        let name = base;
+        let count = 2;
+        while (table.columns.some((column) => column.name === name)) {
+          name = `${base}_${count}`;
+          count += 1;
+        }
+        table.columns.push({
+          id: generateId("col"),
+          name,
+          type: "string",
+          primaryKey: false,
+          required: false,
+          defaultValue: "",
+        });
+        table.rows.forEach((row) => {
+          row[name] = "";
+        });
+      },
+      { action: "Added column", detail: "Added a new schema column" },
+    );
     renderAll();
   }
 
   function removeColumnFromSchema(tableId, columnId) {
     selectedTableId = tableId || selectedTableId;
-    persistTableChange((table, workspace) => {
-      const column = table.columns.find((item) => item.id === columnId);
-      if (!column) return;
-      table.columns = table.columns.filter((item) => item.id !== columnId);
-      table.rows.forEach((row) => { delete row[column.name]; });
-      workspace.database.indexes = workspace.database.indexes.filter((index) => !(index.tableId === table.id && index.columnName === column.name));
-      workspace.database.relationships = workspace.database.relationships.filter((rel) => !((rel.fromTableId === table.id && rel.fromColumn === column.name) || (rel.toTableId === table.id && rel.toColumn === column.name)));
-    }, { action: "Removed column", detail: "Removed a schema column and dependent links" });
+    persistTableChange(
+      (table, workspace) => {
+        const column = table.columns.find((item) => item.id === columnId);
+        if (!column) return;
+        table.columns = table.columns.filter((item) => item.id !== columnId);
+        table.rows.forEach((row) => {
+          delete row[column.name];
+        });
+        workspace.database.indexes = workspace.database.indexes.filter(
+          (index) =>
+            !(index.tableId === table.id && index.columnName === column.name),
+        );
+        workspace.database.relationships =
+          workspace.database.relationships.filter(
+            (rel) =>
+              !(
+                (rel.fromTableId === table.id &&
+                  rel.fromColumn === column.name) ||
+                (rel.toTableId === table.id && rel.toColumn === column.name)
+              ),
+          );
+      },
+      {
+        action: "Removed column",
+        detail: "Removed a schema column and dependent links",
+      },
+    );
     renderAll();
   }
 
   function updateColumnDefinition(tableId, columnId, field, value) {
     selectedTableId = tableId || selectedTableId;
-    persistTableChange((table) => {
-      const column = table.columns.find((item) => item.id === columnId);
-      if (!column) return;
-      if (field === "name") {
-        const newName = slugify(value);
-        if (!newName || table.columns.some((item) => item.id !== columnId && item.name === newName)) return;
-        table.rows.forEach((row) => {
-          row[newName] = row[column.name];
-          delete row[column.name];
-        });
-        column.name = newName;
-      } else if (field === "primaryKey" || field === "required") {
-        column[field] = Boolean(value);
-      } else if (field === "defaultValue") {
-        column.defaultValue = castDefault(column.type, value);
-      } else {
-        column[field] = value;
-      }
-    }, { action: "Updated schema", detail: "Changed a column definition" });
+    persistTableChange(
+      (table) => {
+        const column = table.columns.find((item) => item.id === columnId);
+        if (!column) return;
+        if (field === "name") {
+          const newName = slugify(value);
+          if (
+            !newName ||
+            table.columns.some(
+              (item) => item.id !== columnId && item.name === newName,
+            )
+          )
+            return;
+          table.rows.forEach((row) => {
+            row[newName] = row[column.name];
+            delete row[column.name];
+          });
+          column.name = newName;
+        } else if (field === "primaryKey" || field === "required") {
+          column[field] = Boolean(value);
+        } else if (field === "defaultValue") {
+          column.defaultValue = castDefault(column.type, value);
+        } else {
+          column[field] = value;
+        }
+      },
+      { action: "Updated schema", detail: "Changed a column definition" },
+    );
     renderAll();
   }
 
@@ -171,13 +325,36 @@
     const workspace = loadWorkspace();
     const table = getTableById(workspace.database, id || selectedTableId);
     if (!table) return;
-    const refs = workspace.database.indexes.filter((index) => index.tableId === table.id).length +
-      workspace.database.relationships.filter((rel) => rel.fromTableId === table.id || rel.toTableId === table.id).length;
-    if (!window.confirm(refs ? `Delete '${table.name}' and ${refs} dependent records?` : `Delete '${table.name}'?`)) return;
-    workspace.database.tables = workspace.database.tables.filter((item) => item.id !== table.id);
-    workspace.database.indexes = workspace.database.indexes.filter((index) => index.tableId !== table.id);
-    workspace.database.relationships = workspace.database.relationships.filter((rel) => rel.fromTableId !== table.id && rel.toTableId !== table.id);
-    workspace.activityLog.unshift({ id: generateId("log"), module: "Tables", action: "Deleted table", detail: `Deleted table '${table.name}'`, createdAt: new Date().toISOString() });
+    const refs =
+      workspace.database.indexes.filter((index) => index.tableId === table.id)
+        .length +
+      workspace.database.relationships.filter(
+        (rel) => rel.fromTableId === table.id || rel.toTableId === table.id,
+      ).length;
+    if (
+      !window.confirm(
+        refs
+          ? `Delete '${table.name}' and ${refs} dependent records?`
+          : `Delete '${table.name}'?`,
+      )
+    )
+      return;
+    workspace.database.tables = workspace.database.tables.filter(
+      (item) => item.id !== table.id,
+    );
+    workspace.database.indexes = workspace.database.indexes.filter(
+      (index) => index.tableId !== table.id,
+    );
+    workspace.database.relationships = workspace.database.relationships.filter(
+      (rel) => rel.fromTableId !== table.id && rel.toTableId !== table.id,
+    );
+    workspace.activityLog.unshift({
+      id: generateId("log"),
+      module: "Tables",
+      action: "Deleted table",
+      detail: `Deleted table '${table.name}'`,
+      createdAt: new Date().toISOString(),
+    });
     saveWorkspace(workspace);
     selectedTableId = workspace.database.tables[0]?.id || null;
     renderAll();
@@ -197,7 +374,9 @@
     }
     title.textContent = `${table.name} schema`;
     subtitle.textContent = `${table.columns.length} columns, ${table.rows.length} rows`;
-    target.innerHTML = table.columns.map((column, index) => `
+    target.innerHTML = table.columns
+      .map(
+        (column, index) => `
       <div class="schema-row" data-column-id="${column.id}">
         <span class="drag-handle" title="Column order">${index + 1}</span>
         <label><span class="form-label">Name</span><input class="form-control" value="${escapeHtml(column.name)}" data-column-field="name"></label>
@@ -208,7 +387,9 @@
         <label class="form-check"><input class="form-check-input" type="checkbox" data-column-field="required" ${column.required ? "checked" : ""}> <span class="form-check-label">Required</span></label>
         <button class="btn btn-outline-danger btn-sm" type="button" data-remove-column="${column.id}">Remove</button>
       </div>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 
   function renderRowEditor() {
@@ -220,15 +401,21 @@
     }
     target.innerHTML = `
       <form id="addRowForm" class="row-editor-grid mb-3">
-        ${table.columns.map((column) => `
+        ${table.columns
+          .map(
+            (column) => `
           <label>
             <span class="form-label">${escapeHtml(column.name)} <span class="type-pill">${escapeHtml(column.type)}</span></span>
-            ${column.type === "boolean"
-              ? `<select class="form-select" name="${escapeHtml(column.name)}"><option value="">null</option><option value="true">true</option><option value="false">false</option></select>`
-              : `<input class="form-control" name="${escapeHtml(column.name)}" type="${column.type === "date" ? "date" : "text"}" placeholder="${escapeHtml(String(column.defaultValue ?? ""))}">`}
+            ${
+              column.type === "boolean"
+                ? `<select class="form-select" name="${escapeHtml(column.name)}"><option value="">null</option><option value="true">true</option><option value="false">false</option></select>`
+                : `<input class="form-control" name="${escapeHtml(column.name)}" type="${column.type === "date" ? "date" : "text"}" placeholder="${escapeHtml(String(column.defaultValue ?? ""))}">`
+            }
             <div class="invalid-feedback" data-field-error="${escapeHtml(column.name)}"></div>
           </label>
-        `).join("")}
+        `,
+          )
+          .join("")}
         <button class="btn btn-primary align-self-end" type="submit">Save Row</button>
       </form>`;
   }
@@ -238,7 +425,13 @@
     if (!table) return [];
     const q = String(query || "").toLowerCase();
     if (!q) return table.rows;
-    return table.rows.filter((row) => table.columns.some((column) => String(row[column.name] ?? "").toLowerCase().includes(q)));
+    return table.rows.filter((row) =>
+      table.columns.some((column) =>
+        String(row[column.name] ?? "")
+          .toLowerCase()
+          .includes(q),
+      ),
+    );
   }
 
   function renderDataGrid(tableId) {
@@ -259,10 +452,14 @@
         <table class="data-table">
           <thead><tr>${table.columns.map((column) => `<th>${escapeHtml(column.name)}</th>`).join("")}<th>Actions</th></tr></thead>
           <tbody>
-            ${rows.map((row) => `<tr data-row-id="${row._id}">
+            ${rows
+              .map(
+                (row) => `<tr data-row-id="${row._id}">
               ${table.columns.map((column) => `<td><div class="editable-cell" contenteditable="true" data-cell="${escapeHtml(column.name)}">${escapeHtml(formatCell(row[column.name], column.type))}</div></td>`).join("")}
               <td><button class="btn btn-sm btn-outline-danger" type="button" data-delete-row="${row._id}">Delete</button></td>
-            </tr>`).join("")}
+            </tr>`,
+              )
+              .join("")}
           </tbody>
         </table>
       </div>`;
@@ -276,17 +473,25 @@
 
   function clearFieldErrors(form) {
     if (!form) return;
-    form.querySelectorAll("[data-field-error]").forEach((el) => { el.textContent = ""; });
-    form.querySelectorAll(".is-invalid").forEach((el) => el.classList.remove("is-invalid"));
+    form.querySelectorAll("[data-field-error]").forEach((el) => {
+      el.textContent = "";
+    });
+    form
+      .querySelectorAll(".is-invalid")
+      .forEach((el) => el.classList.remove("is-invalid"));
   }
 
   function showFieldErrors(form, table, errors) {
     if (!form) return;
     errors.forEach((message) => {
-      const column = table.columns.find((item) => message.startsWith(`${item.name} `));
+      const column = table.columns.find((item) =>
+        message.startsWith(`${item.name} `),
+      );
       if (!column) return;
       const field = form.querySelector(`[name="${CSS.escape(column.name)}"]`);
-      const errorEl = form.querySelector(`[data-field-error="${CSS.escape(column.name)}"]`);
+      const errorEl = form.querySelector(
+        `[data-field-error="${CSS.escape(column.name)}"]`,
+      );
       if (field) field.classList.add("is-invalid");
       if (errorEl) errorEl.textContent = message;
     });
@@ -303,9 +508,12 @@
       if (form) showFieldErrors(form, table, validation.errors);
       return false;
     }
-    persistTableChange((target) => {
-      target.rows.push(validation.row);
-    }, { action: "Added row", detail: `Added a row to '${table.name}'` });
+    persistTableChange(
+      (target) => {
+        target.rows.push(validation.row);
+      },
+      { action: "Added row", detail: `Added a row to '${table.name}'` },
+    );
     renderAll();
     showStatus("Row added");
     return true;
@@ -314,19 +522,28 @@
   function editCell(tableId, rowId, columnName, value, cellEl) {
     selectedTableId = tableId || selectedTableId;
     let cellError = null;
-    persistTableChange((table) => {
-      const row = table.rows.find((item) => item._id === rowId);
-      const column = table.columns.find((item) => item.name === columnName);
-      if (!row || !column) return;
-      const candidate = { ...row, [columnName]: value };
-      const validation = validateRow(table, candidate);
-      if (!validation.valid) {
-        cellError = validation.errors.find((message) => message.startsWith(`${columnName} `)) || validation.errors.join("; ");
-        showStatus(cellError, "danger");
-        return;
-      }
-      Object.assign(row, validation.row);
-    }, { action: "Edited cell", detail: `Updated '${columnName}' in '${currentTable()?.name || "table"}'` });
+    persistTableChange(
+      (table) => {
+        const row = table.rows.find((item) => item._id === rowId);
+        const column = table.columns.find((item) => item.name === columnName);
+        if (!row || !column) return;
+        const candidate = { ...row, [columnName]: value };
+        const validation = validateRow(table, candidate);
+        if (!validation.valid) {
+          cellError =
+            validation.errors.find((message) =>
+              message.startsWith(`${columnName} `),
+            ) || validation.errors.join("; ");
+          showStatus(cellError, "danger");
+          return;
+        }
+        Object.assign(row, validation.row);
+      },
+      {
+        action: "Edited cell",
+        detail: `Updated '${columnName}' in '${currentTable()?.name || "table"}'`,
+      },
+    );
     if (cellEl) {
       if (cellError) {
         cellEl.classList.add("is-invalid");
@@ -341,9 +558,12 @@
 
   function deleteRow(tableId, rowId) {
     selectedTableId = tableId || selectedTableId;
-    persistTableChange((table) => {
-      table.rows = table.rows.filter((row) => row._id !== rowId);
-    }, { action: "Deleted row", detail: "Deleted a table row" });
+    persistTableChange(
+      (table) => {
+        table.rows = table.rows.filter((row) => row._id !== rowId);
+      },
+      { action: "Deleted row", detail: "Deleted a table row" },
+    );
     renderAll();
   }
 
@@ -361,13 +581,22 @@
     const table = {
       id: generateId("table"),
       name,
-      columns: template.columns.map((column) => ({ ...column, id: generateId("col") })),
+      columns: template.columns.map((column) => ({
+        ...column,
+        id: generateId("col"),
+      })),
       rows: [],
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
     workspace.database.tables.push(table);
-    workspace.activityLog.unshift({ id: generateId("log"), module: "Tables", action: "Applied template", detail: `Created '${name}' from the ${template.name} template`, createdAt: now });
+    workspace.activityLog.unshift({
+      id: generateId("log"),
+      module: "Tables",
+      action: "Applied template",
+      detail: `Created '${name}' from the ${template.name} template`,
+      createdAt: now,
+    });
     saveWorkspace(workspace);
     selectedTableId = table.id;
     renderAll();
@@ -383,20 +612,29 @@
 
   function bindEvents() {
     document.addEventListener("click", (event) => {
-      if (event.target.closest("[data-sidebar-toggle]")) document.body.classList.toggle("sidebar-open");
+      if (event.target.closest("[data-sidebar-toggle]"))
+        document.body.classList.toggle("sidebar-open");
       const tableButton = event.target.closest("[data-select-table]");
       if (tableButton) {
         selectedTableId = tableButton.dataset.selectTable;
         renderAll();
       }
       if (event.target.id === "createTableBtn") createTable();
-      if (event.target.id === "addColumnBtn" && selectedTableId) addColumnToSchema(selectedTableId);
-      if (event.target.id === "deleteTableBtn" && selectedTableId) deleteTable(selectedTableId);
-      if (event.target.id === "applyTemplateBtn") applyTableTemplate(document.getElementById("templateSelect").value);
+      if (event.target.id === "addColumnBtn" && selectedTableId)
+        addColumnToSchema(selectedTableId);
+      if (event.target.id === "deleteTableBtn" && selectedTableId)
+        deleteTable(selectedTableId);
+      if (event.target.id === "applyTemplateBtn")
+        applyTableTemplate(document.getElementById("templateSelect").value);
       const removeColumn = event.target.closest("[data-remove-column]");
-      if (removeColumn) removeColumnFromSchema(selectedTableId, removeColumn.dataset.removeColumn);
+      if (removeColumn)
+        removeColumnFromSchema(
+          selectedTableId,
+          removeColumn.dataset.removeColumn,
+        );
       const deleteRowButton = event.target.closest("[data-delete-row]");
-      if (deleteRowButton) deleteRow(selectedTableId, deleteRowButton.dataset.deleteRow);
+      if (deleteRowButton)
+        deleteRow(selectedTableId, deleteRowButton.dataset.deleteRow);
     });
 
     document.addEventListener("change", (event) => {
@@ -404,19 +642,39 @@
       if (!field) return;
       const row = field.closest("[data-column-id]");
       const value = field.type === "checkbox" ? field.checked : field.value;
-      updateColumnDefinition(selectedTableId, row.dataset.columnId, field.dataset.columnField, value);
+      updateColumnDefinition(
+        selectedTableId,
+        row.dataset.columnId,
+        field.dataset.columnField,
+        value,
+      );
     });
 
-    document.addEventListener("blur", (event) => {
-      const cell = event.target.closest("[data-cell]");
-      if (cell) editCell(selectedTableId, cell.closest("[data-row-id]").dataset.rowId, cell.dataset.cell, cell.textContent.trim(), cell);
-    }, true);
+    document.addEventListener(
+      "blur",
+      (event) => {
+        const cell = event.target.closest("[data-cell]");
+        if (cell)
+          editCell(
+            selectedTableId,
+            cell.closest("[data-row-id]").dataset.rowId,
+            cell.dataset.cell,
+            cell.textContent.trim(),
+            cell,
+          );
+      },
+      true,
+    );
 
-    document.getElementById("rowSearchInput").addEventListener("input", (event) => {
-      rowFilter = event.target.value;
-      renderDataGrid(selectedTableId);
-    });
-    document.getElementById("tableSearchInput").addEventListener("input", renderTableList);
+    document
+      .getElementById("rowSearchInput")
+      .addEventListener("input", (event) => {
+        rowFilter = event.target.value;
+        renderDataGrid(selectedTableId);
+      });
+    document
+      .getElementById("tableSearchInput")
+      .addEventListener("input", renderTableList);
     document.addEventListener("submit", (event) => {
       if (event.target.id !== "addRowForm") return;
       event.preventDefault();
@@ -431,7 +689,8 @@
     document.getElementById("appSidebar").outerHTML = renderSidebar("tables");
     setActiveNav();
     const requested = new URLSearchParams(window.location.search).get("table");
-    selectedTableId = requested || loadWorkspace().database.tables[0]?.id || null;
+    selectedTableId =
+      requested || loadWorkspace().database.tables[0]?.id || null;
     renderTemplateSelect();
     renderAll();
     bindEvents();

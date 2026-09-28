@@ -7,22 +7,31 @@
     const tables = workspace.database.tables;
 
     if (!workspace.database.indexes.length) {
-      target.innerHTML = renderEmptyState("No indexes yet. Create one from the side panel.");
+      target.innerHTML = renderEmptyState(
+        "No indexes yet. Create one from the side panel.",
+      );
       return;
     }
 
-    target.innerHTML = tables.map((table) => {
-      const indexes = workspace.database.indexes.filter((index) => index.tableId === table.id);
-      if (!indexes.length) return "";
-      return `
+    target.innerHTML =
+      tables
+        .map((table) => {
+          const indexes = workspace.database.indexes.filter(
+            (index) => index.tableId === table.id,
+          );
+          if (!indexes.length) return "";
+          return `
         <div class="index-group">
           <h3 class="index-group-title">
             <span>${escapeHtml(table.name)}</span>
             <span class="chip">${indexes.length} indexes</span>
           </h3>
-          ${indexes.map((index) => {
-            const violations = index.unique ? checkUniqueViolations(table, index.columnName) : [];
-            return `
+          ${indexes
+            .map((index) => {
+              const violations = index.unique
+                ? checkUniqueViolations(table, index.columnName)
+                : [];
+              return `
               <article class="index-card">
                 <div>
                   <p class="index-name">${escapeHtml(index.columnName)}</p>
@@ -37,20 +46,28 @@
                 <button class="btn btn-sm btn-outline-danger" type="button" data-delete-index="${index.id}">Delete</button>
               </article>
             `;
-          }).join("")}
+            })
+            .join("")}
         </div>
       `;
-    }).join("") || renderEmptyState("No indexes are attached to existing tables.");
+        })
+        .join("") ||
+      renderEmptyState("No indexes are attached to existing tables.");
   }
 
   function renderCreateIndexControls() {
     const workspace = loadWorkspace();
     const tableSelect = document.getElementById("indexTableSelect");
-    const selectedTableId = tableSelect.value || workspace.database.tables[0]?.id || "";
+    const selectedTableId =
+      tableSelect.value || workspace.database.tables[0]?.id || "";
 
-    tableSelect.innerHTML = workspace.database.tables.map((table) => `
+    tableSelect.innerHTML = workspace.database.tables
+      .map(
+        (table) => `
       <option value="${table.id}" ${table.id === selectedTableId ? "selected" : ""}>${escapeHtml(table.name)}</option>
-    `).join("");
+    `,
+      )
+      .join("");
     renderColumnSelect(selectedTableId);
   }
 
@@ -59,7 +76,12 @@
     const table = getTableById(workspace.database, tableId);
     const columnSelect = document.getElementById("indexColumnSelect");
     columnSelect.innerHTML = table
-      ? table.columns.map((column) => `<option value="${escapeHtml(column.name)}">${escapeHtml(column.name)} (${escapeHtml(column.type)})</option>`).join("")
+      ? table.columns
+          .map(
+            (column) =>
+              `<option value="${escapeHtml(column.name)}">${escapeHtml(column.name)} (${escapeHtml(column.type)})</option>`,
+          )
+          .join("")
       : "";
     renderUniqueViolationWarning(tableId, columnSelect.value);
   }
@@ -67,10 +89,14 @@
   function renderLookupSelect() {
     const workspace = loadWorkspace();
     const select = document.getElementById("lookupIndexSelect");
-    select.innerHTML = workspace.database.indexes.map((index) => {
-      const table = getTableById(workspace.database, index.tableId);
-      return table ? `<option value="${index.id}">${escapeHtml(table.name)}.${escapeHtml(index.columnName)}</option>` : "";
-    }).join("");
+    select.innerHTML = workspace.database.indexes
+      .map((index) => {
+        const table = getTableById(workspace.database, index.tableId);
+        return table
+          ? `<option value="${index.id}">${escapeHtml(table.name)}.${escapeHtml(index.columnName)}</option>`
+          : "";
+      })
+      .join("");
   }
 
   function createIndex(tableId, columnName, unique) {
@@ -80,20 +106,36 @@
       showStatus("Choose a table and column first.", "danger");
       return;
     }
-    if (workspace.database.indexes.some((index) => index.tableId === tableId && index.columnName === columnName)) {
+    if (
+      workspace.database.indexes.some(
+        (index) => index.tableId === tableId && index.columnName === columnName,
+      )
+    ) {
       showStatus("That column is already indexed.", "warning");
       return;
     }
     const violations = unique ? checkUniqueViolations(table, columnName) : [];
-    if (violations.length && !window.confirm(`This unique index has ${violations.length} duplicate value groups. Create it anyway?`)) return;
+    if (
+      violations.length &&
+      !window.confirm(
+        `This unique index has ${violations.length} duplicate value groups. Create it anyway?`,
+      )
+    )
+      return;
 
-    workspace.database.indexes.push({ id: generateId("index"), tableId, columnName, unique: Boolean(unique), createdAt: new Date().toISOString() });
+    workspace.database.indexes.push({
+      id: generateId("index"),
+      tableId,
+      columnName,
+      unique: Boolean(unique),
+      createdAt: new Date().toISOString(),
+    });
     workspace.activityLog.unshift({
       id: generateId("log"),
       module: "Indexes",
       action: "Created index",
       detail: `Created ${unique ? "unique" : "non-unique"} index on ${table.name}.${columnName}`,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     });
     saveWorkspace(workspace);
     showStatus(`Indexed ${table.name}.${columnName}`);
@@ -105,13 +147,15 @@
     const index = workspace.database.indexes.find((item) => item.id === id);
     if (!index) return;
     const table = getTableById(workspace.database, index.tableId);
-    workspace.database.indexes = workspace.database.indexes.filter((item) => item.id !== id);
+    workspace.database.indexes = workspace.database.indexes.filter(
+      (item) => item.id !== id,
+    );
     workspace.activityLog.unshift({
       id: generateId("log"),
       module: "Indexes",
       action: "Deleted index",
       detail: `Deleted index on ${table?.name || "unknown"}.${index.columnName}`,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     });
     saveWorkspace(workspace);
     showStatus("Index deleted", "warning");
@@ -122,15 +166,20 @@
     const column = table.columns.find((item) => item.name === columnName);
     if (!column) return value;
     if (column.type === "number") return Number(value);
-    if (column.type === "boolean") return String(value).toLowerCase() === "true";
+    if (column.type === "boolean")
+      return String(value).toLowerCase() === "true";
     if (column.type === "date") return String(value).slice(0, 10);
     return String(value);
   }
 
   function runLookupComparison(indexId, value) {
     const workspace = loadWorkspace();
-    const index = workspace.database.indexes.find((item) => item.id === indexId);
-    const table = index ? getTableById(workspace.database, index.tableId) : null;
+    const index = workspace.database.indexes.find(
+      (item) => item.id === indexId,
+    );
+    const table = index
+      ? getTableById(workspace.database, index.tableId)
+      : null;
     const target = document.getElementById("lookupResults");
     if (!index || !table) {
       target.innerHTML = renderEmptyState("Choose an index to compare.");
@@ -139,7 +188,9 @@
 
     const lookupValue = coerceLookupValue(table, index.columnName, value);
     const scanStart = performance.now();
-    const scanRows = table.rows.filter((row) => row[index.columnName] === lookupValue);
+    const scanRows = table.rows.filter(
+      (row) => row[index.columnName] === lookupValue,
+    );
     const scanMs = performance.now() - scanStart;
 
     const mapStart = performance.now();
@@ -152,7 +203,7 @@
       indexedRows,
       scanMs: Number(scanMs.toFixed(4)),
       mapMs: Number(mapMs.toFixed(4)),
-      lookupValue
+      lookupValue,
     };
 
     target.innerHTML = `
@@ -187,39 +238,61 @@
     }
     target.innerHTML = `
       <div class="violation-list">
-        ${violations.map((group) => `
+        ${violations
+          .map(
+            (group) => `
           <div class="violation-item">
             <strong>${escapeHtml(columnName)} = ${escapeHtml(group.value)}</strong>
             <div class="small">${group.rows.length} conflicting rows: ${group.rows.map((row) => escapeHtml(row._id)).join(", ")}</div>
           </div>
-        `).join("")}
+        `,
+          )
+          .join("")}
       </div>
     `;
   }
 
   function bindEvents() {
     document.addEventListener("click", (event) => {
-      if (event.target.closest("[data-sidebar-toggle]")) document.body.classList.toggle("sidebar-open");
+      if (event.target.closest("[data-sidebar-toggle]"))
+        document.body.classList.toggle("sidebar-open");
       const deleteButton = event.target.closest("[data-delete-index]");
       if (deleteButton) deleteIndex(deleteButton.dataset.deleteIndex);
     });
 
-    document.getElementById("indexTableSelect").addEventListener("change", (event) => renderColumnSelect(event.target.value));
-    document.getElementById("indexColumnSelect").addEventListener("change", (event) => {
-      renderUniqueViolationWarning(document.getElementById("indexTableSelect").value, event.target.value);
-    });
+    document
+      .getElementById("indexTableSelect")
+      .addEventListener("change", (event) =>
+        renderColumnSelect(event.target.value),
+      );
+    document
+      .getElementById("indexColumnSelect")
+      .addEventListener("change", (event) => {
+        renderUniqueViolationWarning(
+          document.getElementById("indexTableSelect").value,
+          event.target.value,
+        );
+      });
 
-    document.getElementById("createIndexForm").addEventListener("submit", (event) => {
-      event.preventDefault();
-      const data = new FormData(event.target);
-      createIndex(data.get("tableId"), data.get("columnName"), data.get("unique") === "on");
-    });
+    document
+      .getElementById("createIndexForm")
+      .addEventListener("submit", (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        createIndex(
+          data.get("tableId"),
+          data.get("columnName"),
+          data.get("unique") === "on",
+        );
+      });
 
-    document.getElementById("lookupForm").addEventListener("submit", (event) => {
-      event.preventDefault();
-      const data = new FormData(event.target);
-      runLookupComparison(data.get("indexId"), data.get("value"));
-    });
+    document
+      .getElementById("lookupForm")
+      .addEventListener("submit", (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        runLookupComparison(data.get("indexId"), data.get("value"));
+      });
   }
 
   function renderAll() {
